@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const express = require("express");
 const Accounts = require("../Database/accounts.model.js");
 
-mongoose.connect('mongodb://localhost:27017/paytm');
+mongoose.connect('mongodb://localhost:27017/paytm')
+.then(console.log("DB is Connected"))
 
 const userSchema = mongoose.Schema({
     username: {
