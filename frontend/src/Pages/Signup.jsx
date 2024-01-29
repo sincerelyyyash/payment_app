@@ -9,6 +9,24 @@ function Signup() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    const handleSignUp = async () => {
+        try {
+          const requestBody = {
+            username,
+            firstname,
+            lastname,
+            password
+          };
+      
+          const response = await axios.post("http://localhost:3000/api/v1/user/signup", requestBody);
+      
+          localStorage.setItem("token", response.data.token);
+          navigate("/dashboard");
+        } catch (error) {
+          console.error('Error signing up:', error);
+        }
+      };
+
 
   return (
     <div className='flex justify-center'>
@@ -54,20 +72,13 @@ function Signup() {
         />
 
         <button
-        onClick={async () => {
-            const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-              username,
-              firstname,
-              lastname,
-              password
-            });
-            localStorage.setItem("token", response.data.token)
-            navigate("/dashboard")
-          }}
+        onClick={handleSignUp}
         className='mt-5 bg-black text-white font-bold text-xl h-12 rounded-lg'
         >Sign Up</button>
         <div className='flex flex-row mt-4 justify-center gap-1'>
-        <p>Already have an account?</p><button className='font-bold underline'>Login</button>
+        <p>Already have an account?</p><button className='font-bold underline'  onClick={()=>{
+            navigate("/signin")
+        }}>Login</button>
         
         
         </div>
@@ -78,18 +89,5 @@ function Signup() {
   )
 }
 
-// async function signUp ({username,firstname,lastname,password}){
-//     const response = await axios.post("http://localhost:3000/api/v1/user/signup",{
-//         body:{
-//             username,
-//         firstname,
-//         lastname,
-//         password
-//         }
-//     });
-//     localStorage.setItem("token", response.data.token)
-//     console.log(response.data.message)
-//     navigate("/dashboard")
-// }
 
 export default Signup

@@ -7,6 +7,23 @@ function Signin() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+
+    const handleSignIn = async () => {
+        try {
+          const requestBody = {
+            username,
+            password
+          };
+      
+          const response = await axios.post("http://localhost:3000/api/v1/user/signin", requestBody);
+      
+          localStorage.setItem("token", response.data.token);
+          navigate("/dashboard");
+        } catch (error) {
+          console.error('Error signing in:', error);
+        }
+      };
+
   return (
     <div className='flex justify-center'>
     <div className="w-full p-5 shadow-2xl lg:max-w-lg mt-10 rounded-lg">
@@ -37,18 +54,13 @@ function Signin() {
         />
 
         <button
-        onClick={async () => {
-            const response = await axios.post("http://localhost:3000/api/v1/user/signin", {
-              username,
-              password
-            });
-            localStorage.setItem("token", response.data.token)
-            navigate("/dashboard")
-          }}
+        onClick={handleSignIn}
         className='mt-5 bg-black text-white font-bold text-xl h-12 rounded-lg'
         >Sign In</button>
         <div className='flex flex-row mt-4 justify-center gap-1'>
-        <p>Don't have an account?</p><button className='font-bold underline'>Sign-Up</button>
+        <p>Don't have an account?</p><button className='font-bold underline' onClick={()=>{
+            navigate("/signup")
+        }}>Sign-Up</button>
         </div>
         </div>
         </div>
@@ -58,14 +70,6 @@ function Signin() {
 }
 
 
-// async function signIn ({username,password}){
-//     const response = await axios.post("http://localhost:3000/api/v1/user/signin",{
-//         username,
-//         password
-//     });
-//     localStorage.setItem("token", response.data.token)
-//     navigate("/dashboard")
-
-// }
-
 export default Signin
+
+
